@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,37 +7,112 @@
 <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
 <script src="https://cdn.plot.ly/plotly-2.31.1.min.js"></script>
 <style>
-  body {font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji",sans-serif; margin:0;}
-  header { padding: 18px 22px; border-bottom: 1px solid #e5e7eb; }
-  h1 { margin:0 0 6px 0; font-size: 20px; }
-  .sub { color:#6b7280; font-size: 13px; }
-  .container { padding: 14px 22px 28px 22px; }
+  body {font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji",sans-serif; margin:0; background:#f8fafc; color:#0f172a;}
+  header { padding: 22px 22px 16px; border-bottom: 1px solid #e5e7eb; background:#0f172a; color:#e2e8f0; }
+  h1 { margin:4px 0 4px 0; font-size: 22px; }
+  .sub { color:#cbd5e1; font-size: 13px; }
+  .hero { background: linear-gradient(120deg,#0ea5e9 0%,#6366f1 60%,#a855f7 100%); color:white; padding:24px 22px 26px; display:flex; flex-direction:column; gap:12px; }
+  .hero h2 { margin:4px 0; font-size:20px; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size:11px; color:#cbd5e1; margin:0 0 4px 0; }
+  .hero p { margin:0; max-width: 820px; color:#e0f2fe; }
+  .container { padding: 18px 22px 28px 22px; }
+  .section-title { font-weight:700; margin: 6px 0 14px; font-size: 18px; }
   .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:8px 0 12px; }
   .controls > * { font-size: 14px; }
-  select, button, input[type="range"] { padding:6px 8px; border:1px solid #d1d5db; border-radius:8px; background:#f9fafb; }
+  select, button, input[type="range"] { padding:6px 8px; border:1px solid #d1d5db; border-radius:10px; background:#f9fafb; }
   .btn.on { background:#eef2ff; border-color:#6366f1; }
-  .tabs { display:flex; gap:8px; margin:8px 0 16px; flex-wrap:wrap; }
-  .tab-btn { border:1px solid #d1d5db; padding:8px 12px; border-radius:8px; background:#f9fafb; cursor:pointer; }
-  .tab-btn.active { background:#e0f2fe; border-color:#0ea5e9; }
-  .tab { display:none; }
-  .tab.active { display:block; }
-  .row { display:flex; gap:16px; flex-wrap:wrap; }
-  .card { flex:1 1 420px; border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+  .primary-tabs { display:flex; gap:10px; flex-wrap:wrap; }
+  .primary-btn { border:1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15); color:white; padding:10px 14px; border-radius:14px; cursor:pointer; font-weight:600; backdrop-filter: blur(6px); }
+  .primary-btn.active { background:white; color:#0f172a; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .subtabs { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px; }
+  .subtab-btn { border:1px solid #d1d5db; padding:8px 12px; border-radius:10px; background:white; cursor:pointer; font-weight:600; color:#0f172a; }
+  .subtab-btn.active { background:#e0f2fe; border-color:#0ea5e9; }
+  .subtab { display:none; }
+  .subtab.active { display:block; }
+  .intro-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+  .card { flex:1 1 420px; border:1px solid #e5e7eb; border-radius:12px; padding:12px; background:white; box-shadow:0 6px 18px rgba(15,23,42,0.06); }
   .label { font-size:12px; color:#6b7280; margin-bottom:6px; }
   .small { font-size:12px; color:#374151; }
   table { border-collapse: collapse; width:100%; }
   th, td { border:1px solid #e5e7eb; padding:6px 8px; text-align:left; }
   th { background:#f3f4f6; }
-  .footer { border-top:1px solid #e5e7eb; padding:12px 22px; font-size:12px; color:#6b7280; }
+  .footer { border-top:1px solid #e5e7eb; padding:12px 22px; font-size:12px; color:#6b7280; background:#f8fafc; }
+  .result-tabs { display:flex; gap:8px; margin:12px 0 16px; flex-wrap:wrap; }
+  .result-tab-btn { border:1px solid #d1d5db; padding:8px 12px; border-radius:8px; background:#f9fafb; cursor:pointer; font-weight:600; }
+  .result-tab-btn.active { background:#e0f2fe; border-color:#0ea5e9; }
+  .result-tab { display:none; }
+  .result-tab.active { display:block; }
+  .row { display:flex; gap:16px; flex-wrap:wrap; }
+  .muted { color:#475569; }
 </style>
 </head>
 <body>
 <header>
-  <h1>INDENG 242A — In-Vehicle Coupon Selection Project Dashboard</h1>
+  <div class="eyebrow">INDENG 242A | Offline Report</div>
+  <h1>In-Vehicle Coupon Selection Dashboard</h1>
   <div class="sub">Dataset: In-vehicle Coupon Recommendation | Author: Jingyan Li</div>
 </header>
 
-<div class="container">
+<div class="hero">
+  <div>
+    <p class="eyebrow">Customer response to context-aware coupons</p>
+    <h2>Choose a view to explore the story behind the models</h2>
+    <p>Toggle between the introduction, detailed results, and a takeaway summary. The page is fully offline and interactive.</p>
+  </div>
+  <div class="primary-tabs">
+    <button class="primary-btn active" data-panel="introPanel">Introduction &amp; Methods</button>
+    <button class="primary-btn" data-panel="resultsPanel">Results</button>
+    <button class="primary-btn" data-panel="discussionPanel">Discussion &amp; Conclusion</button>
+  </div>
+</div>
+
+<div id="introPanel" class="container panel active">
+  <div class="section-title">Introduction &amp; Methods</div>
+  <div class="subtabs">
+    <button class="subtab-btn active" data-subtab="bgTab">Background</button>
+    <button class="subtab-btn" data-subtab="dataTab">Data Description</button>
+    <button class="subtab-btn" data-subtab="methodTab">Methods</button>
+  </div>
+  <div id="bgTab" class="subtab active">
+    <div class="intro-grid">
+      <div class="card">
+        <h3>Background</h3>
+        <ul class="muted">
+          <li>Objective: Understand customer response to in-vehicle, context-aware coupon recommendations for local businesses.</li>
+          <li>Targeting: Coupons tailored to each user’s current context (destination, time, weather, passengers, etc.).</li>
+          <li>Data Source: Amazon Mechanical Turk survey describing varied driving scenarios.</li>
+          <li>Labeling: <strong>Y = 1</strong> for “Drive there right away” or “Later before the coupon expires”; <strong>Y = 0</strong> for “No, I do not want the coupon.”</li>
+          <li>Prediction Problem: Given demographic and contextual attributes, predict whether a customer will accept a coupon for a specific venue.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="dataTab" class="subtab">
+    <div class="intro-grid">
+      <div class="card">
+        <h3>Data Description</h3>
+        <p class="muted"><strong>in_vehicle_coupon_selection.csv</strong>: 12,684 observations, 26 variables.</p>
+        <p class="muted">Key fields include destination, passengers, weather, temperature, time, coupon type, expiration, demographics, income, and visit frequency features (e.g., Bar, CoffeeHouse, CarryAway).</p>
+        <p class="muted">Binary indicators: has_children, toCoupon_GEQ15min, toCoupon_GEQ25min, direction_same.</p>
+        <p class="muted">Categorical variables are one-hot encoded for temperature, destination, passenger, weather, time, coupon, expiration, gender, age, marital status, education, occupation, income, and dining/visit-frequency features.</p>
+      </div>
+    </div>
+  </div>
+  <div id="methodTab" class="subtab">
+    <div class="intro-grid">
+      <div class="card">
+        <h3>Methods</h3>
+        <p class="muted"><strong>Models:</strong> Logistic Regression (baseline), L1 Logistic Regression (CV-selected λ), CART (cost-complexity pruned), Logit + CART ensemble (probability average), Bagging (200 trees), Random Forest (300 trees, CV-tuned), Gradient Boosting (CV-tuned).</p>
+        <p class="muted"><strong>Evaluation metrics:</strong> Accuracy = (TP + TN)/(Total); TPR = TP/(TP + FN); FPR = FP/(FP + TN); AUC for L1 logit.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="resultsPanel" class="container panel">
+  <div class="section-title">Results</div>
   <div class="controls">
     <div>
       <div class="label">Model</div>
@@ -50,23 +124,23 @@
       <span id="topKVal" class="small">15</span>
     </div>
     <div>
-      <div class="label">Threshold (for Confusion Matrix & Probabilities)</div>
+      <div class="label">Threshold (for Confusion Matrix &amp; Probabilities)</div>
       <input id="thr" type="range" min="0" max="50" step="1" value="25"/>
       <span id="thrVal" class="small">0.50</span>
     </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="overview">Overview</button>
-    <button class="tab-btn" data-tab="metrics">Metrics</button>
-    <button class="tab-btn" data-tab="cm">Confusion Matrix</button>
-    <button class="tab-btn" data-tab="curves">ROC/PR Curves</button>
-    <button class="tab-btn" data-tab="proba">Probabilities</button>
-    <button class="tab-btn" data-tab="imp">Feature Importance</button>
-    <button class="tab-btn" data-tab="dl">Downloads</button>
+  <div class="result-tabs">
+    <button class="result-tab-btn active" data-tab="overview">Overview</button>
+    <button class="result-tab-btn" data-tab="metrics">Metrics</button>
+    <button class="result-tab-btn" data-tab="cm">Confusion Matrix</button>
+    <button class="result-tab-btn" data-tab="curves">ROC/PR Curves</button>
+    <button class="result-tab-btn" data-tab="proba">Probabilities</button>
+    <button class="result-tab-btn" data-tab="imp">Feature Importance</button>
+    <button class="result-tab-btn" data-tab="dl">Downloads</button>
   </div>
 
-  <div id="overview" class="tab active">
+  <div id="overview" class="result-tab active">
     <div class="row">
       <div class="card" style="flex:1 1 100%;">
         <div id="overviewFig"></div>
@@ -75,7 +149,7 @@
     </div>
   </div>
 
-  <div id="metrics" class="tab">
+  <div id="metrics" class="result-tab">
     <div class="row">
       <div class="card">
         <div id="metricFig"></div>
@@ -84,7 +158,7 @@
     </div>
   </div>
 
-  <div id="cm" class="tab">
+  <div id="cm" class="result-tab">
     <div class="row">
       <div class="card">
         <div id="cmFig"></div>
@@ -93,7 +167,7 @@
     </div>
   </div>
 
-  <div id="curves" class="tab">
+  <div id="curves" class="result-tab">
     <div class="row">
       <div class="card">
         <div id="rocFig"></div>
@@ -106,7 +180,7 @@
     </div>
   </div>
 
-  <div id="proba" class="tab">
+  <div id="proba" class="result-tab">
     <div class="row">
       <div class="card">
         <div id="probaFig"></div>
@@ -115,7 +189,7 @@
     </div>
   </div>
 
-  <div id="imp" class="tab">
+  <div id="imp" class="result-tab">
     <div class="row">
       <div class="card">
         <div id="impFig"></div>
@@ -124,7 +198,7 @@
     </div>
   </div>
 
-  <div id="dl" class="tab">
+  <div id="dl" class="result-tab">
     <div class="row">
       <div class="card">
         <div class="label">CSV downloads</div>
@@ -132,6 +206,46 @@
         <div id="dlImpList"></div>
         <div class="small">Each plot also supports PNG export (camera icon in the top-right toolbar).</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div id="discussionPanel" class="container panel">
+  <div class="section-title">Discussion &amp; Conclusion</div>
+  <div class="intro-grid">
+    <div class="card">
+      <h3>Feature Importance (Top Drivers)</h3>
+      <p class="muted"><strong>Offer &amp; Feasibility:</strong> Coupon type (Carry-out, Restaurant &lt; $20); Expiration 2h (–); Distance ≥ 15 / 25 min (–); Direction Same (+).</p>
+      <p class="muted"><strong>Habits:</strong> CoffeeHouse_never, Bar_never (–).</p>
+      <p class="muted"><strong>Context / Demographics:</strong> Destination = No Urgent Place (+); Time 6 PM (+); Gender = Male, Has Children (– moderate effects).</p>
+    </div>
+    <div class="card">
+      <h3>Discussion</h3>
+      <ul class="muted">
+        <li>Nonlinearity dominates: acceptance rules are interaction-driven.</li>
+        <li>Variance reduction: ensembles suppress overfitting of single trees.</li>
+        <li>Operational impact: bagging reduces false offers ( FPR ↓ 0.1 vs linear models ).</li>
+        <li>Interpretability vs Performance: trade-off between logit clarity and ensemble accuracy.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Limitations</h3>
+      <ul class="muted">
+        <li>Hypothetical survey data (stated vs revealed preferences).</li>
+        <li>Coarse travel-distance thresholds.</li>
+        <li>Single train/test split (not repeated CV).</li>
+        <li>Correlated demographics and habits.</li>
+        <li>Accuracy metric not cost-sensitive.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Practical Implications</h3>
+      <ul class="muted">
+        <li>Personalize by habit before contextual ranking.</li>
+        <li>Adjust thresholds by coupon value or risk of annoyance.</li>
+        <li>Deploy ensemble for prediction; use interpretable model as explanation layer.</li>
+        <li>Extend future work to cost-sensitive and online learning frameworks.</li>
+      </ul>
     </div>
   </div>
 </div>
@@ -145,13 +259,37 @@ window.METRICS_ROWS = [{"Model": "Random Forest", "Accuracy": 0.7482157018239493
 window.METRICS_CSV_URI = "data:text/csv;charset=utf-8,Model%2CAccuracy%2CTPR%2CFPR%2CPrecision%2CF1%0ARandom%20Forest%2C0.7482157018239493%2C0.8135593220338984%2C0.33544303797468356%2C0.7564018384766907%2C0.7839401156856074%0AGradient%20Boosting%2C0.7200634417129262%2C0.7980225988700564%2C0.379746835443038%2C0.7290322580645161%2C0.7619689817936615%0ABagging%20%28DT%29%2C0.7093576526566218%2C0.8114406779661016%2C0.4213381555153707%2C0.7114551083591332%2C0.7581656219069614%0ALogistic%20Regression%2C0.6819984139571769%2C0.7704802259887006%2C0.43128390596745025%2C0.6957908163265306%2C0.7312332439678284%0AL1%20Logistic%2C0.6819984139571769%2C0.7747175141242938%2C0.43670886075949367%2C0.6943037974683545%2C0.7323097463284379%0ACART%20%28pruned%29%2C0.6808088818398097%2C0.7909604519774012%2C0.4602169981916817%2C0.6875383670963782%2C0.735632183908046%0A";
 window.IMP_CSV_MAP = {"Logistic Regression": "data:text/csv;charset=utf-8,feature%2Cimportance%0Acat__coupon_Carry%20out%20%26%20Take%20away%2C1.804573516917771%0Acat__coupon_Restaurant%28%3C20%29%2C1.6159328664844284%0Acat__CoffeeHouse_never%2C0.9972183383618618%0Acat__RestaurantLessThan20_nan%2C0.888200678734616%0Acat__expiration_2h%2C0.8778969255908892%0Acat__destination_No%20Urgent%20Place%2C0.8520528026110122%0Acat__occupation_Installation%20Maintenance%20%26%20Repair%2C0.8462455539340212%0Acat__education_Some%20High%20School%2C0.7413753093727741%0Acat__Bar_nan%2C0.7274316089347418%0Acat__CoffeeHouse_nan%2C0.7186813466167853%0Acat__coupon_Coffee%20House%2C0.607312695629713%0Acat__occupation_Construction%20%26%20Extraction%2C0.6050293730235544%0Anum__direction_same%2C0.5866917880180137%0Acat__weather_Sunny%2C0.5509102016409416%0Acat__occupation_Healthcare%20Practitioners%20%26%20Technical%2C0.5125582057381015%0Acat__Bar_gt8%2C0.49588107890447813%0Acat__coupon_Restaurant%2820-50%29%2C0.4857225642656135%0Acat__income_%2487500%20-%20%2499999%2C0.4558847764187389%0Acat__CoffeeHouse_less1%2C0.44027310347042686%0Acat__occupation_Community%20%26%20Social%20Services%2C0.4027937016029917%0Acat__temperature_55%2C0.38759894457708%0Acat__income_%2462500%20-%20%2474999%2C0.3837589888326346%0Acat__education_Graduate%20degree%20%28Masters%20or%20Doctorate%29%2C0.375439177914389%0Acat__occupation_Production%20Occupations%2C0.37132523118141497%0Acat__passanger_Kid%28s%29%2C0.3630200863038337%0Acat__CoffeeHouse_gt8%2C0.3592567832747519%0Acat__occupation_Legal%2C0.34970398580575174%0Acat__occupation_Protective%20Service%2C0.309285616562227%0Acat__occupation_Retired%2C0.2974799945672173%0Acat__occupation_Healthcare%20Support%2C0.27654435573943587%0Acat__time_6PM%2C0.26409745618033165%0Acat__Bar_less1%2C0.2598256909236274%0Acat__occupation_Arts%20Design%20Entertainment%20Sports%20%26%20Media%2C0.25799843933001054%0Acat__CarryAway_nan%2C0.25306878344029227%0Acat__occupation_Business%20%26%20Financial%2C0.25235182973519005%0Acat__Restaurant20To50_never%2C0.24263121570916135%0Acat__passanger_Partner%2C0.2364038814657164%0Acat__education_High%20School%20Graduate%2C0.23470308974935514%0Acat__income_%2475000%20-%20%2487499%2C0.2317787639747573%0Acat__passanger_Friend%28s%29%2C0.22890604828465536%0Acat__occupation_Life%20Physical%20Social%20Science%2C0.2228947097999175%0Acat__gender_Male%2C0.20606216830177687%0Acat__RestaurantLessThan20_gt8%2C0.20517606215832213%0Acat__age_41%2C0.19708237436297996%0Acat__RestaurantLessThan20_never%2C0.19055447793502298%0Acat__occupation_Unemployed%2C0.1895237537488586%0Acat__occupation_Education%26Training%26Library%2C0.1854278061812818%0Anum__toCoupon_GEQ25min%2C0.1853844796621891%0Acat__maritalStatus_Single%2C0.1842244789854517%0Acat__temperature_80%2C0.17605912723071418%0Acat__Bar_never%2C0.17504730032424193%0Acat__age_50plus%2C0.1740350143868413%0Acat__maritalStatus_Widowed%2C0.1591995349344612%0Acat__CarryAway_gt8%2C0.15335593430535352%0Acat__occupation_Building%20%26%20Grounds%20Cleaning%20%26%20Maintenance%2C0.14791404810112466%0Acat__CarryAway_less1%2C0.14754948481969815%0Acat__weather_Snowy%2C0.14698035168045456%0Acat__Restaurant20To50_less1%2C0.14482826013690633%0Acat__income_%2450000%20-%20%2462499%2C0.1421547815897573%0Acat__income_Less%20than%20%2412500%2C0.13518719963065484%0Acat__occupation_Student%2C0.13231195711164767%0Acat__occupation_Sales%20%26%20Related%2C0.1300557649930455%0Acat__Restaurant20To50_nan%2C0.12696177399512673%0Acat__education_Bachelors%20degree%2C0.12595705656770476%0Acat__CarryAway_never%2C0.12203062413071773%0Acat__time_10PM%2C0.1216394023872419%0Acat__occupation_Transportation%20%26%20Material%20Moving%2C0.12064607999903539%0Acat__occupation_Computer%20%26%20Mathematical%2C0.11908891251588977%0Acat__RestaurantLessThan20_less1%2C0.11815313109826492%0Acat__occupation_Management%2C0.11231027200102953%0Acat__income_%2437500%20-%20%2449999%2C0.09721132696234852%0Acat__age_31%2C0.08879144210420872%0Acat__income_%2412500%20-%20%2424999%2C0.08777610362496684%0Anum__toCoupon_GEQ15min%2C0.08411233173816592%0Acat__time_2PM%2C0.07337582671196048%0Acat__age_36%2C0.07317316127662754%0Acat__Restaurant20To50_4~8%2C0.07196490506773158%0Acat__age_below21%2C0.07014889759847535%0Acat__Bar_4~8%2C0.06947890511558077%0Acat__RestaurantLessThan20_4~8%2C0.0634965803134573%0Acat__occupation_Food%20Preparation%20%26%20Serving%20Related%2C0.061943088091224174%0Acat__maritalStatus_Married%20partner%2C0.059377891220233806%0Acat__occupation_Office%20%26%20Administrative%20Support%2C0.05544609211324207%0Acat__CarryAway_4~8%2C0.049306563821333485%0Acat__Restaurant20To50_gt8%2C0.03743953567471255%0Acat__occupation_Personal%20Care%20%26%20Service%2C0.036771991501453556%0Acat__income_%2425000%20-%20%2437499%2C0.02852146512122232%0Acat__CoffeeHouse_4~8%2C0.028134814109743334%0Acat__age_26%2C0.02314922047212668%0Acat__occupation_Farming%20Fishing%20%26%20Forestry%2C0.022295983828175006%0Acat__education_Some%20college%20-%20no%20degree%2C0.02008257178308023%0Acat__destination_Work%2C0.017605373114958196%0Acat__time_7AM%2C0.017605373114958196%0Acat__maritalStatus_Unmarried%20partner%2C0.01438191865102293%0Anum__has_children%2C0.010862336758852714%0Acat__age_46%2C0.006235530507989473%0A", "L1 Logistic": "data:text/csv;charset=utf-8,feature%2Cimportance%0Acat__coupon_Carry%20out%20%26%20Take%20away%2C1.7501051191414991%0Acat__coupon_Restaurant%28%3C20%29%2C1.5751461235777382%0Acat__CoffeeHouse_never%2C0.9601121748643733%0Acat__expiration_2h%2C0.862322750737385%0Acat__destination_No%20Urgent%20Place%2C0.7942959907986287%0Acat__RestaurantLessThan20_nan%2C0.71968464133135%0Acat__CoffeeHouse_nan%2C0.646686385144414%0Acat__occupation_Construction%20%26%20Extraction%2C0.627997488854404%0Acat__occupation_Installation%20Maintenance%20%26%20Repair%2C0.6114608095944808%0Acat__education_Some%20High%20School%2C0.6060856991291298%0Acat__Bar_nan%2C0.6015829708398643%0Acat__coupon_Coffee%20House%2C0.5746962732709507%0Acat__occupation_Healthcare%20Practitioners%20%26%20Technical%2C0.564702820230634%0Anum__direction_same%2C0.5395914670813554%0Acat__weather_Sunny%2C0.5044414029325464%0Acat__Bar_gt8%2C0.455500825542685%0Acat__coupon_Restaurant%2820-50%29%2C0.4352751797236455%0Acat__CoffeeHouse_less1%2C0.4157853894983705%0Acat__income_%2487500%20-%20%2499999%2C0.40242757789304595%0Acat__education_Graduate%20degree%20%28Masters%20or%20Doctorate%29%2C0.3923988463523908%0Acat__passanger_Kid%28s%29%2C0.34825182968209767%0Acat__occupation_Protective%20Service%2C0.34368186738036555%0Acat__income_%2462500%20-%20%2474999%2C0.3407880024825028%0Acat__occupation_Healthcare%20Support%2C0.3249998339362307%0Acat__CoffeeHouse_gt8%2C0.32224524444099656%0Acat__temperature_55%2C0.29316597871899425%0Acat__occupation_Community%20%26%20Social%20Services%2C0.27951261677784855%0Acat__occupation_Life%20Physical%20Social%20Science%2C0.25123411901833975%0Acat__time_6PM%2C0.23656592565000367%0Acat__Bar_less1%2C0.22779842162070255%0Acat__Restaurant20To50_never%2C0.22757108162671064%0Acat__passanger_Friend%28s%29%2C0.21543220579444086%0Acat__occupation_Legal%2C0.2100045837134222%0Acat__gender_Male%2C0.19912873647630594%0Acat__passanger_Partner%2C0.1961108954920422%0Acat__income_%2475000%20-%20%2487499%2C0.19479264329616666%0Acat__occupation_Retired%2C0.18338868969392885%0Acat__age_50plus%2C0.17689836194127334%0Acat__education_High%20School%20Graduate%2C0.17626773196537518%0Acat__occupation_Production%20Occupations%2C0.16535437413753998%0Acat__age_41%2C0.1650251374021513%0Acat__RestaurantLessThan20_gt8%2C0.16412772442158682%0Acat__Bar_never%2C0.15860379962300258%0Acat__income_%2450000%20-%20%2462499%2C0.15539234758674955%0Acat__occupation_Arts%20Design%20Entertainment%20Sports%20%26%20Media%2C0.15241335858184876%0Acat__CarryAway_gt8%2C0.1455994648961392%0Acat__education_Bachelors%20degree%2C0.14443073451393745%0Acat__CarryAway_nan%2C0.14143521455203348%0Anum__toCoupon_GEQ25min%2C0.1375762061816377%0Acat__time_10PM%2C0.13749899493246862%0Acat__Restaurant20To50_less1%2C0.13597912495550554%0Acat__CarryAway_less1%2C0.135786215680884%0Acat__occupation_Office%20%26%20Administrative%20Support%2C0.13044332847504606%0Acat__occupation_Business%20%26%20Financial%2C0.11837958996626752%0Acat__RestaurantLessThan20_never%2C0.11378638603204355%0Acat__maritalStatus_Single%2C0.11323708783553305%0Acat__temperature_80%2C0.10461573526466406%0Acat__age_31%2C0.08579397450079887%0Acat__income_Less%20than%20%2412500%2C0.08486656786149563%0Acat__occupation_Unemployed%2C0.08207373538191659%0Anum__toCoupon_GEQ15min%2C0.0811324212172922%0Acat__RestaurantLessThan20_less1%2C0.07985830804982084%0Acat__Restaurant20To50_4~8%2C0.07574548717425747%0Acat__age_36%2C0.07104303118100706%0Acat__occupation_Education%26Training%26Library%2C0.06953645487303223%0Acat__maritalStatus_Unmarried%20partner%2C0.06541544573576744%0Acat__income_%2437500%20-%20%2449999%2C0.06356830333261967%0Acat__income_%2412500%20-%20%2424999%2C0.055122774371269785%0Acat__RestaurantLessThan20_4~8%2C0.053704063744338656%0Acat__time_2PM%2C0.052856753274561956%0Acat__CarryAway_4~8%2C0.046117051457097324%0Acat__Bar_4~8%2C0.04583794779822875%0Acat__Restaurant20To50_nan%2C0.041656754864476876%0Acat__CarryAway_never%2C0.033340238419640046%0Acat__age_below21%2C0.03222077503737852%0Acat__occupation_Sales%20%26%20Related%2C0.0307297107158222%0Acat__weather_Snowy%2C0.022265897762748368%0Acat__occupation_Student%2C0.01920716208985108%0Acat__age_26%2C0.01848704524663972%0Acat__maritalStatus_Widowed%2C0.016364319795455738%0Acat__CoffeeHouse_4~8%2C0.010923292118970692%0Acat__occupation_Computer%20%26%20Mathematical%2C0.008631515422038286%0Acat__destination_Work%2C0.004093410150374654%0Acat__time_7AM%2C0.0033954977804014357%0Anum__has_children%2C0.0019772163533753836%0Acat__maritalStatus_Married%20partner%2C0.0%0Acat__Restaurant20To50_gt8%2C0.0%0Acat__education_Some%20college%20-%20no%20degree%2C0.0%0Acat__income_%2425000%20-%20%2437499%2C0.0%0Acat__occupation_Building%20%26%20Grounds%20Cleaning%20%26%20Maintenance%2C0.0%0Acat__age_46%2C0.0%0Acat__occupation_Farming%20Fishing%20%26%20Forestry%2C0.0%0Acat__occupation_Management%2C0.0%0Acat__occupation_Personal%20Care%20%26%20Service%2C0.0%0Acat__occupation_Transportation%20%26%20Material%20Moving%2C0.0%0Acat__occupation_Food%20Preparation%20%26%20Serving%20Related%2C0.0%0A", "CART (pruned)": "data:text/csv;charset=utf-8,feature%2Cimportance%0Acat__coupon_Restaurant%28%3C20%29%2C0.19863738590740398%0Acat__coupon_Carry%20out%20%26%20Take%20away%2C0.13599098913728838%0Acat__CoffeeHouse_never%2C0.13334120176405723%0Acat__coupon_Coffee%20House%2C0.09402545197851737%0Anum__toCoupon_GEQ25min%2C0.09215622945636295%0Acat__expiration_2h%2C0.07173800897303519%0Acat__Bar_never%2C0.06763199341015373%0Acat__coupon_Restaurant%2820-50%29%2C0.03630370045678466%0Acat__destination_No%20Urgent%20Place%2C0.03436972243777095%0Acat__time_6PM%2C0.02837258061610505%0Acat__time_10PM%2C0.026696879817320877%0Acat__CoffeeHouse_less1%2C0.020226193405798742%0Acat__Bar_less1%2C0.018092352683216795%0Acat__passanger_Partner%2C0.017296274823739254%0Anum__direction_same%2C0.014649016964626765%0Acat__maritalStatus_Single%2C0.010472018167818087%0Acat__income_%2412500%20-%20%2424999%2C0.0%0Acat__income_%2475000%20-%20%2487499%2C0.0%0Acat__occupation_Student%2C0.0%0Acat__Bar_gt8%2C0.0%0Acat__occupation_Transportation%20%26%20Material%20Moving%2C0.0%0Acat__Bar_4~8%2C0.0%0Acat__income_Less%20than%20%2412500%2C0.0%0Acat__income_%2487500%20-%20%2499999%2C0.0%0Acat__income_%2462500%20-%20%2474999%2C0.0%0Acat__income_%2425000%20-%20%2437499%2C0.0%0Acat__income_%2450000%20-%20%2462499%2C0.0%0Acat__income_%2437500%20-%20%2449999%2C0.0%0Acat__occupation_Protective%20Service%2C0.0%0Acat__occupation_Sales%20%26%20Related%2C0.0%0Acat__occupation_Unemployed%2C0.0%0Acat__occupation_Production%20Occupations%2C0.0%0Acat__Bar_nan%2C0.0%0Acat__occupation_Retired%2C0.0%0Anum__has_children%2C0.0%0Acat__CoffeeHouse_4~8%2C0.0%0Acat__RestaurantLessThan20_gt8%2C0.0%0Acat__Restaurant20To50_nan%2C0.0%0Acat__Restaurant20To50_less1%2C0.0%0Acat__Restaurant20To50_gt8%2C0.0%0Acat__Restaurant20To50_4~8%2C0.0%0Acat__RestaurantLessThan20_never%2C0.0%0Acat__RestaurantLessThan20_nan%2C0.0%0Acat__RestaurantLessThan20_less1%2C0.0%0Acat__RestaurantLessThan20_4~8%2C0.0%0Acat__CoffeeHouse_gt8%2C0.0%0Acat__CarryAway_never%2C0.0%0Acat__CarryAway_nan%2C0.0%0Acat__CarryAway_less1%2C0.0%0Acat__CarryAway_gt8%2C0.0%0Acat__CarryAway_4~8%2C0.0%0Acat__occupation_Office%20%26%20Administrative%20Support%2C0.0%0Acat__CoffeeHouse_nan%2C0.0%0Acat__occupation_Personal%20Care%20%26%20Service%2C0.0%0Acat__occupation_Healthcare%20Practitioners%20%26%20Technical%2C0.0%0Acat__occupation_Management%2C0.0%0Acat__maritalStatus_Unmarried%20partner%2C0.0%0Acat__age_below21%2C0.0%0Acat__age_50plus%2C0.0%0Acat__age_46%2C0.0%0Acat__age_41%2C0.0%0Acat__age_36%2C0.0%0Acat__age_31%2C0.0%0Acat__age_26%2C0.0%0Acat__gender_Male%2C0.0%0Acat__time_7AM%2C0.0%0Acat__time_2PM%2C0.0%0Acat__weather_Sunny%2C0.0%0Acat__weather_Snowy%2C0.0%0Acat__passanger_Kid%28s%29%2C0.0%0Acat__passanger_Friend%28s%29%2C0.0%0Acat__destination_Work%2C0.0%0Acat__temperature_80%2C0.0%0Acat__temperature_55%2C0.0%0Acat__maritalStatus_Married%20partner%2C0.0%0Acat__maritalStatus_Widowed%2C0.0%0Acat__occupation_Life%20Physical%20Social%20Science%2C0.0%0Acat__education_Bachelors%20degree%2C0.0%0Acat__occupation_Legal%2C0.0%0Acat__occupation_Installation%20Maintenance%20%26%20Repair%2C0.0%0Acat__occupation_Healthcare%20Support%2C0.0%0Anum__toCoupon_GEQ15min%2C0.0%0Acat__occupation_Food%20Preparation%20%26%20Serving%20Related%2C0.0%0Acat__occupation_Farming%20Fishing%20%26%20Forestry%2C0.0%0Acat__occupation_Education%26Training%26Library%2C0.0%0Acat__occupation_Construction%20%26%20Extraction%2C0.0%0Acat__occupation_Computer%20%26%20Mathematical%2C0.0%0Acat__occupation_Community%20%26%20Social%20Services%2C0.0%0Acat__occupation_Business%20%26%20Financial%2C0.0%0Acat__occupation_Building%20%26%20Grounds%20Cleaning%20%26%20Maintenance%2C0.0%0Acat__occupation_Arts%20Design%20Entertainment%20Sports%20%26%20Media%2C0.0%0Acat__education_Some%20college%20-%20no%20degree%2C0.0%0Acat__education_Some%20High%20School%2C0.0%0Acat__education_High%20School%20Graduate%2C0.0%0Acat__education_Graduate%20degree%20%28Masters%20or%20Doctorate%29%2C0.0%0Acat__Restaurant20To50_never%2C0.0%0A", "Random Forest": "data:text/csv;charset=utf-8,feature%2Cimportance%0Acat__coupon_Restaurant%28%3C20%29%2C0.03523378192443454%0Acat__coupon_Carry%20out%20%26%20Take%20away%2C0.03261719539580363%0Acat__CoffeeHouse_never%2C0.0308150821845433%0Acat__expiration_2h%2C0.03021774908266753%0Acat__coupon_Coffee%20House%2C0.02357140270781479%0Acat__Bar_never%2C0.02254402363559682%0Anum__toCoupon_GEQ15min%2C0.02050904047647278%0Acat__time_6PM%2C0.0194594125221559%0Acat__destination_No%20Urgent%20Place%2C0.01855443274087149%0Anum__toCoupon_GEQ25min%2C0.018329667716922574%0Acat__gender_Male%2C0.017301746428486253%0Acat__Restaurant20To50_less1%2C0.017092583878532214%0Acat__CoffeeHouse_less1%2C0.01644222659246818%0Acat__RestaurantLessThan20_4~8%2C0.014960035981453394%0Acat__education_Bachelors%20degree%2C0.014841550474690853%0Acat__CarryAway_4~8%2C0.014793402333883494%0Acat__weather_Sunny%2C0.014639597132231626%0Acat__passanger_Friend%28s%29%2C0.014590127640111769%0Acat__Bar_less1%2C0.014527840708107063%0Anum__direction_same%2C0.014413940170701469%0Acat__time_10PM%2C0.014268216096005452%0Acat__CarryAway_less1%2C0.014159813773789862%0Acat__coupon_Restaurant%2820-50%29%2C0.014155384475685416%0Anum__has_children%2C0.013932523872389675%0Acat__occupation_Student%2C0.013890383432805846%0Acat__temperature_80%2C0.013769819142657921%0Acat__education_Some%20college%20-%20no%20degree%2C0.013602467286786808%0Acat__maritalStatus_Single%2C0.012884811150062453%0Acat__age_26%2C0.0127467059382759%0Acat__temperature_55%2C0.012737613771570299%0Acat__income_%2425000%20-%20%2437499%2C0.012702673197489942%0Acat__income_%2450000%20-%20%2462499%2C0.01254005696505413%0Acat__occupation_Sales%20%26%20Related%2C0.012441207899477306%0Acat__RestaurantLessThan20_less1%2C0.012349996168842567%0Acat__income_%2437500%20-%20%2449999%2C0.012327217738084336%0Acat__occupation_Unemployed%2C0.012262389839225818%0Acat__Restaurant20To50_never%2C0.012189357240322014%0Acat__occupation_Computer%20%26%20Mathematical%2C0.011935584478550592%0Acat__age_31%2C0.011746839736665978%0Acat__education_Graduate%20degree%20%28Masters%20or%20Doctorate%29%2C0.011741812973174408%0Acat__maritalStatus_Unmarried%20partner%2C0.011406905112935791%0Acat__maritalStatus_Married%20partner%2C0.011372167123675642%0Acat__income_%2412500%20-%20%2424999%2C0.011251017889083822%0Acat__age_36%2C0.010852033784109373%0Acat__income_%2462500%20-%20%2474999%2C0.01033601031221946%0Acat__income_%2487500%20-%20%2499999%2C0.01030850643587324%0Acat__time_2PM%2C0.010116940714719408%0Acat__age_50plus%2C0.010073268914644112%0Acat__CoffeeHouse_4~8%2C0.00980078129908749%0Acat__occupation_Education%26Training%26Library%2C0.009762804158793277%0Acat__passanger_Kid%28s%29%2C0.009452069966590626%0Acat__CarryAway_gt8%2C0.009293610305889438%0Acat__income_%2475000%20-%20%2487499%2C0.008832980087078734%0Acat__Bar_4~8%2C0.008653937936152878%0Acat__CoffeeHouse_gt8%2C0.008621157457304142%0Acat__occupation_Management%2C0.008264876232880915%0Acat__time_7AM%2C0.008166172759148063%0Acat__destination_Work%2C0.008062777184925428%0Acat__age_41%2C0.00797532204807259%0Acat__income_Less%20than%20%2412500%2C0.007826689144216246%0Acat__passanger_Partner%2C0.007751051283837127%0Acat__occupation_Office%20%26%20Administrative%20Support%2C0.007686905226783622%0Acat__occupation_Arts%20Design%20Entertainment%20Sports%20%26%20Media%2C0.007576764734081444%0Acat__Restaurant20To50_4~8%2C0.007491046241255452%0Acat__RestaurantLessThan20_gt8%2C0.007418731681721238%0Acat__age_46%2C0.0072172843310520565%0Acat__occupation_Business%20%26%20Financial%2C0.00705366655902886%0Acat__education_High%20School%20Graduate%2C0.006682019821957089%0Acat__weather_Snowy%2C0.006387741905887802%0Acat__occupation_Retired%2C0.006288189223007754%0Acat__age_below21%2C0.005326661391298906%0Acat__Bar_gt8%2C0.005131748480427391%0Acat__occupation_Community%20%26%20Social%20Services%2C0.0043257105805644125%0Acat__occupation_Legal%2C0.004287358353848569%0Acat__occupation_Healthcare%20Support%2C0.0042403217725231505%0Acat__occupation_Food%20Preparation%20%26%20Serving%20Related%2C0.00413286673393007%0Acat__occupation_Healthcare%20Practitioners%20%26%20Technical%2C0.004129545668026119%0Acat__occupation_Life%20Physical%20Social%20Science%2C0.004043868320986163%0Acat__occupation_Installation%20Maintenance%20%26%20Repair%2C0.0031718285865798973%0Acat__Restaurant20To50_gt8%2C0.002872150244549134%0Acat__CoffeeHouse_nan%2C0.0028665140891364427%0Acat__occupation_Transportation%20%26%20Material%20Moving%2C0.002706523392483102%0Acat__RestaurantLessThan20_never%2C0.00253826337638892%0Acat__occupation_Personal%20Care%20%26%20Service%2C0.0025214211622333242%0Acat__Bar_nan%2C0.0025099515317259197%0Acat__CarryAway_nan%2C0.0023974330640043327%0Acat__occupation_Construction%20%26%20Extraction%2C0.0023017870345164587%0Acat__Restaurant20To50_nan%2C0.0022307084328802556%0Acat__occupation_Protective%20Service%2C0.0021116938358705763%0Acat__RestaurantLessThan20_nan%2C0.0018668324326721656%0Acat__maritalStatus_Widowed%2C0.0018588228097471682%0Acat__education_Some%20High%20School%2C0.0018279278107885967%0Acat__CarryAway_never%2C0.001639338922636579%0Acat__occupation_Production%20Occupations%2C0.001607062875686734%0Acat__occupation_Farming%20Fishing%20%26%20Forestry%2C0.0008008985711627206%0Acat__occupation_Building%20%26%20Grounds%20Cleaning%20%26%20Maintenance%2C0.0007296157444533829%0A", "Gradient Boosting": "data:text/csv;charset=utf-8,feature%2Cimportance%0Acat__coupon_Restaurant%28%3C20%29%2C0.1054320190520762%0Acat__coupon_Carry%20out%20%26%20Take%20away%2C0.0977282367056476%0Acat__coupon_Coffee%20House%2C0.07577542356762505%0Acat__CoffeeHouse_never%2C0.06871627605027532%0Acat__expiration_2h%2C0.054232693087797684%0Acat__destination_No%20Urgent%20Place%2C0.03281156739956089%0Anum__toCoupon_GEQ25min%2C0.03031145838951728%0Acat__Bar_never%2C0.027583448045938097%0Acat__weather_Sunny%2C0.020442818187953217%0Acat__passanger_Friend%28s%29%2C0.01829056880581742%0Acat__time_10PM%2C0.015603656510079026%0Acat__maritalStatus_Unmarried%20partner%2C0.014635388735024698%0Anum__direction_same%2C0.014054216093840971%0Acat__coupon_Restaurant%2820-50%29%2C0.013917389947276993%0Acat__Bar_less1%2C0.01371877659451127%0Anum__toCoupon_GEQ15min%2C0.013431891045897327%0Acat__CoffeeHouse_less1%2C0.012999362632794064%0Acat__CarryAway_less1%2C0.012619481854906476%0Acat__time_6PM%2C0.012467340966756241%0Acat__gender_Male%2C0.01246121643794063%0Acat__education_Graduate%20degree%20%28Masters%20or%20Doctorate%29%2C0.010703752376227092%0Acat__income_%2487500%20-%20%2499999%2C0.010284939910377919%0Acat__income_%2462500%20-%20%2474999%2C0.010181310441632691%0Acat__CoffeeHouse_gt8%2C0.01009992419627279%0Acat__maritalStatus_Single%2C0.009868352988025214%0Acat__age_36%2C0.009051947691979197%0Acat__Restaurant20To50_less1%2C0.008725789673293464%0Acat__Bar_gt8%2C0.008399850862991593%0Acat__age_50plus%2C0.008286760600018615%0Acat__age_31%2C0.00821534878091667%0Acat__occupation_Sales%20%26%20Related%2C0.007790403242647956%0Acat__income_%2450000%20-%20%2462499%2C0.00766633790453572%0Acat__income_%2437500%20-%20%2449999%2C0.007566675978000071%0Acat__CoffeeHouse_4~8%2C0.0073423916123573985%0Acat__temperature_55%2C0.006994977167236884%0Acat__RestaurantLessThan20_less1%2C0.006751869355901975%0Acat__Restaurant20To50_4~8%2C0.006583121251114791%0Acat__occupation_Student%2C0.006258535008749656%0Acat__income_%2412500%20-%20%2424999%2C0.0058220023404641965%0Anum__has_children%2C0.005661122800637311%0Acat__RestaurantLessThan20_4~8%2C0.0056595634289875844%0Acat__occupation_Office%20%26%20Administrative%20Support%2C0.0054654278753451194%0Acat__passanger_Kid%28s%29%2C0.005410875075345771%0Acat__education_Bachelors%20degree%2C0.005325737359317546%0Acat__Bar_nan%2C0.005141069735122927%0Acat__age_26%2C0.0049550848304964245%0Acat__Restaurant20To50_never%2C0.004897951576277765%0Acat__occupation_Legal%2C0.004895278836900421%0Acat__weather_Snowy%2C0.004875634551626677%0Acat__income_%2425000%20-%20%2437499%2C0.00478393896976251%0Acat__time_7AM%2C0.004526659728585975%0Acat__occupation_Construction%20%26%20Extraction%2C0.004461941919275569%0Acat__maritalStatus_Married%20partner%2C0.004448829795765132%0Acat__occupation_Healthcare%20Support%2C0.00426390634265848%0Acat__income_%2475000%20-%20%2487499%2C0.0042020685305246%0Acat__RestaurantLessThan20_gt8%2C0.004200403359328669%0Acat__occupation_Computer%20%26%20Mathematical%2C0.00417492186597392%0Acat__education_Some%20college%20-%20no%20degree%2C0.003996173860234374%0Acat__RestaurantLessThan20_never%2C0.0038037160692899158%0Acat__occupation_Healthcare%20Practitioners%20%26%20Technical%2C0.0037953548855611413%0Acat__temperature_80%2C0.0037938152467525076%0Acat__passanger_Partner%2C0.0037485656672704365%0Acat__occupation_Installation%20Maintenance%20%26%20Repair%2C0.0036528995411529317%0Acat__education_High%20School%20Graduate%2C0.0035108636449144603%0Acat__occupation_Retired%2C0.0034317951386519715%0Acat__education_Some%20High%20School%2C0.0032813701996155836%0Acat__destination_Work%2C0.0028874379463743366%0Acat__Restaurant20To50_gt8%2C0.0028780575239539573%0Acat__income_Less%20than%20%2412500%2C0.002875589488105394%0Acat__Bar_4~8%2C0.002790810813372274%0Acat__RestaurantLessThan20_nan%2C0.002563101190168433%0Acat__occupation_Community%20%26%20Social%20Services%2C0.0024997011870746787%0Acat__occupation_Unemployed%2C0.0024456914926797636%0Acat__CoffeeHouse_nan%2C0.002410495628002317%0Acat__CarryAway_gt8%2C0.0024055058835132934%0Acat__occupation_Life%20Physical%20Social%20Science%2C0.002352356441394042%0Acat__occupation_Education%26Training%26Library%2C0.0023429806696112524%0Acat__occupation_Transportation%20%26%20Material%20Moving%2C0.0022333748410250844%0Acat__occupation_Protective%20Service%2C0.0020984483376579217%0Acat__age_41%2C0.0020272979655655207%0Acat__time_2PM%2C0.0020262916735292458%0Acat__age_below21%2C0.0020064888034906476%0Acat__occupation_Management%2C0.001996227060936843%0Acat__occupation_Business%20%26%20Financial%2C0.001975683044832205%0Acat__age_46%2C0.001911744392786625%0Acat__occupation_Food%20Preparation%20%26%20Serving%20Related%2C0.001690992647382141%0Acat__occupation_Arts%20Design%20Entertainment%20Sports%20%26%20Media%2C0.0015436284563521872%0Acat__CarryAway_4~8%2C0.0014407164699891146%0Acat__occupation_Farming%20Fishing%20%26%20Forestry%2C0.0011019876007148572%0Acat__CarryAway_never%2C0.001068688194057529%0Acat__occupation_Personal%20Care%20%26%20Service%2C0.0009939143130366487%0Acat__maritalStatus_Widowed%2C0.0008471541265191424%0Acat__CarryAway_nan%2C0.0008335980445996548%0Acat__occupation_Building%20%26%20Grounds%20Cleaning%20%26%20Maintenance%2C0.0008276201230152284%0Acat__Restaurant20To50_nan%2C0.0005788498917298592%0Acat__occupation_Production%20Occupations%2C0.00015307341917381148%0A"};
 
-// Tabs
-const tabButtons = document.querySelectorAll('.tab-btn');
-const tabs = document.querySelectorAll('.tab');
-tabButtons.forEach(btn => {
+// Main navigation
+const primaryButtons = document.querySelectorAll('.primary-btn');
+const panels = document.querySelectorAll('.panel');
+primaryButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    tabButtons.forEach(b => b.classList.remove('active'));
-    tabs.forEach(t => t.classList.remove('active'));
+    primaryButtons.forEach(b => b.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.panel).classList.add('active');
+  });
+});
+
+// Introduction & sub-tabs
+const subtabButtons = document.querySelectorAll('.subtab-btn');
+const subtabs = document.querySelectorAll('.subtab');
+subtabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    subtabButtons.forEach(b => b.classList.remove('active'));
+    subtabs.forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.subtab).classList.add('active');
+  });
+});
+
+// Results tabs
+const resultTabButtons = document.querySelectorAll('.result-tab-btn');
+const resultTabs = document.querySelectorAll('.result-tab');
+resultTabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    resultTabButtons.forEach(b => b.classList.remove('active'));
+    resultTabs.forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.tab).classList.add('active');
   });
