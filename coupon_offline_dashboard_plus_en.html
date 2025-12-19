@@ -11,10 +11,10 @@
   header { padding: 22px 22px 16px; border-bottom: 1px solid #e5e7eb; background:#0f172a; color:#e2e8f0; }
   h1 { margin:4px 0 4px 0; font-size: 22px; }
   .sub { color:#cbd5e1; font-size: 13px; }
-  .hero { background: linear-gradient(120deg,#0ea5e9 0%,#6366f1 60%,#a855f7 100%); color:white; padding:24px 22px 26px; display:flex; flex-direction:column; gap:12px; }
+  .hero { background: #f8fafc; color:#0f172a; padding:16px 22px 18px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid #e5e7eb; }
   .hero h2 { margin:4px 0; font-size:20px; }
-  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size:11px; color:#cbd5e1; margin:0 0 4px 0; }
-  .hero p { margin:0; max-width: 820px; color:#e0f2fe; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size:11px; color:#475569; margin:0 0 4px 0; }
+  .hero p { margin:0; max-width: 820px; color:#0f172a; }
   .container { padding: 18px 22px 28px 22px; }
   .section-title { font-weight:700; margin: 6px 0 14px; font-size: 18px; }
   .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:8px 0 12px; }
@@ -22,8 +22,8 @@
   select, button, input[type="range"] { padding:6px 8px; border:1px solid #d1d5db; border-radius:10px; background:#f9fafb; }
   .btn.on { background:#eef2ff; border-color:#6366f1; }
   .primary-tabs { display:flex; gap:10px; flex-wrap:wrap; }
-  .primary-btn { border:1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15); color:white; padding:10px 14px; border-radius:14px; cursor:pointer; font-weight:600; backdrop-filter: blur(6px); }
-  .primary-btn.active { background:white; color:#0f172a; }
+  .primary-btn { border:1px solid #d1d5db; background: white; color:#0f172a; padding:10px 14px; border-radius:14px; cursor:pointer; font-weight:600; }
+  .primary-btn.active { background:#0f172a; color:#e2e8f0; border-color:#0f172a; }
   .panel { display:none; }
   .panel.active { display:block; }
   .subtabs { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px; }
@@ -56,11 +56,6 @@
 </header>
 
 <div class="hero">
-  <div>
-    <p class="eyebrow">Customer response to context-aware coupons</p>
-    <h2>Choose a view to explore the story behind the models</h2>
-    <p>Toggle between the introduction, detailed results, and a takeaway summary. The page is fully offline and interactive.</p>
-  </div>
   <div class="primary-tabs">
     <button class="primary-btn active" data-panel="introPanel">Introduction &amp; Methods</button>
     <button class="primary-btn" data-panel="resultsPanel">Results</button>
@@ -98,13 +93,17 @@
         <p class="muted">Binary indicators: has_children, toCoupon_GEQ15min, toCoupon_GEQ25min, direction_same.</p>
         <p class="muted">Categorical variables are one-hot encoded for temperature, destination, passenger, weather, time, coupon, expiration, gender, age, marital status, education, occupation, income, and dining/visit-frequency features.</p>
       </div>
+      <div class="card">
+        <h3>Features</h3>
+        <p class="muted">Destination: No Urgent Place, Home, Work<br/>Passanger: Alone, Friend(s), Kid(s), Partner (who are the passengers in the car)<br/>Weather: Sunny, Rainy, Snowy<br/>Temperature: 55, 80, 30<br/>Time: 2PM, 10AM, 6PM, 7AM, 10PM<br/>Coupon: Restaurant (&lt; $20), Coffee House, Carry out &amp; Take away, Bar, Restaurant ($20-$50)<br/>Expiration: 1d, 2h (the coupon expires in 1 day or in 2 hours)<br/>Gender: Female, Male<br/>Age: 21, 46, 26, 31, 41, 50plus, 36, below21<br/>Marital Status: Unmarried partner, Single, Married partner, Divorced, Widowed<br/>Has Children: 1, 0<br/>Education: Some college - no degree, Bachelors degree, Associates degree, High School Graduate, Graduate degree (Masters or Doctorate), Some High School<br/>Occupation: Unemployed, Architecture &amp; Engineering, Student, Education &amp; Training &amp; Library, Healthcare Support, Healthcare Practitioners &amp; Technical, Sales &amp; Related, Management, Arts Design Entertainment Sports &amp; Media, Computer &amp; Mathematical, Life Physical Social Science, Personal Care &amp; Service, Community &amp; Social Services, Office &amp; Administrative Support, Construction &amp; Extraction, Legal, Retired, Installation Maintenance &amp; Repair, Transportation &amp; Material Moving, Business &amp; Financial, Protective Service, Food Preparation &amp; Serving Related, Production Occupations, Building &amp; Grounds Cleaning &amp; Maintenance, Farming Fishing &amp; Forestry<br/>Income: $37500 - $49999, $62500 - $74999, $12500 - $24999, $75000 - $87499, $50000 - $62499, $ 25000 - $37499, $100000 or More, $87500 - $99999, Less than $12500<br/>Bar: never, less 1, 1-3, gt8, nan, 4-8 (how many times do you go to a bar every month?)<br/>CoffeeHouse: never, less1, 4-8, 1-3, gt8, nan (how many times do you go to a coffeehouse every month?)<br/>CarryAway: 4-8, 1-3, gt8, less1, never (how many times do you get take-away food every month?)<br/>RestaurantLessThan20: 4-8, 1-3, less1, gt8, never (how many times do you go to a restaurant with an average expense per person of less than $20 every month?)<br/>Restaurant20To50: 1-3, less1, never, gt8, 4-8, nan (how many times do you go to a restaurant with average expense per person of $20 - $50 every month?)<br/>toCoupon GEQ15min: 0, 1 (driving distance to the restaurant/bar for using the coupon is greater than 15 minutes)<br/>toCoupon GEQ25min: 0, 1 (driving distance to the restaurant/bar for using the coupon is greater than 25 minutes)<br/>Direction same: 0, 1 (whether the restaurant/bar is in the same direction as your current destination)<br/>Direction opp: 1, 0 (whether the restaurant/bar is in the opposite direction as your current destination)<br/>Y: 1, 0 (whether the coupon is accepted)</p>
+      </div>
     </div>
   </div>
   <div id="methodTab" class="subtab">
     <div class="intro-grid">
       <div class="card">
         <h3>Methods</h3>
-        <p class="muted"><strong>Models:</strong> Logistic Regression (baseline), L1 Logistic Regression (CV-selected λ), CART (cost-complexity pruned), Logit + CART ensemble (probability average), Bagging (200 trees), Random Forest (300 trees, CV-tuned), Gradient Boosting (CV-tuned).</p>
+        <p class="muted"><strong>Models:</strong><br/>Logistic Regression (baseline)<br/>L1 Logistic Regression (CV-selected λ)<br/>CART (cost-complexity pruned)<br/>Logit + CART ensemble (probability average)<br/>Bagging (200 trees)<br/>Random Forest (300 trees, CV-tuned)<br/>Gradient Boosting (CV-tuned)</p>
         <p class="muted"><strong>Evaluation metrics:</strong> Accuracy = (TP + TN)/(Total); TPR = TP/(TP + FN); FPR = FP/(FP + TN); AUC for L1 logit.</p>
       </div>
     </div>
