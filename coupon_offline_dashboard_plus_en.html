@@ -215,7 +215,10 @@ function renderOverview() {
     type: 'bar',
     name: m,
     x: models,
-    y: rows.map(r => r[m])
+    y: rows.map(r => r[m]),
+    text: rows.map(r => r[m]),
+    textposition: 'outside',
+    texttemplate: '%{y:.2f}'
   }));
   Plotly.react('overviewFig', traces, {
     barmode: 'group',
@@ -233,7 +236,7 @@ function updateMetricsAll() {
   const valMap = { Accuracy: cur.acc, TPR: cur.rec, FPR: cur.fpr, Precision: cur.prec, F1: cur.f1 };
   const metrics = Object.keys(valMap);
   const values = metrics.map(m => valMap[m]);
-  Plotly.react('metricFig', [{ type:'bar', x:metrics, y:values }], {
+  Plotly.react('metricFig', [{ type:'bar', x:metrics, y:values, text: values, textposition:'outside', texttemplate:'%{y:.2f}' }], {
     title: `Metrics (${sel.value} @ threshold=${(thr.value/100).toFixed(2)})`,
     yaxis: {range:[0,1], title:'Score'},
     xaxis: {title:'Metric'}
@@ -304,7 +307,7 @@ function updateImportance() {
   const k = parseInt(topK.value,10);
   const sorted = [...p.feature_importances].sort((a,b)=>b.importance-a.importance).slice(0,k).reverse();
   Plotly.react('impFig', [
-    {type:'bar', orientation:'h', x:sorted.map(d=>d.importance), y:sorted.map(d=>d.feature)}
+    {type:'bar', orientation:'h', x:sorted.map(d=>d.importance), y:sorted.map(d=>d.feature), text: sorted.map(d=>d.importance), textposition:'outside', texttemplate:'%{x:.3f}'}
   ], {
     title:`Top-${k} Feature Importance (${sel.value})`,
     margin:{l:240}
