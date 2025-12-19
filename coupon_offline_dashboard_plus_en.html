@@ -45,16 +45,6 @@
       <select id="modelSelect"></select>
     </div>
     <div>
-      <div class="label">Metric toggle (for the “Metrics” plot)</div>
-      <div>
-        <button class="metric-btn" data-metric="Accuracy">Accuracy</button>
-        <button class="metric-btn" data-metric="TPR">TPR</button>
-        <button class="metric-btn" data-metric="FPR">FPR</button>
-        <button class="metric-btn" data-metric="Precision">Precision</button>
-        <button class="metric-btn" data-metric="F1">F1</button>
-      </div>
-    </div>
-    <div>
       <div class="label">Top-k features (for Importance)</div>
       <input id="topK" type="range" min="5" max="40" step="1" value="15"/>
       <span id="topKVal" class="small">15</span>
@@ -94,7 +84,7 @@
     <div class="row">
       <div class="card">
         <div id="metricFig"></div>
-        <div class="small">Use the “Metric toggle” buttons to switch the metric.</div>
+        <div class="small">Accuracy, TPR, FPR, Precision, and F1 for the selected model at the chosen threshold.</div>
       </div>
     </div>
   </div>
@@ -170,7 +160,6 @@ tabButtons.forEach(btn => {
 
 // Controls
 const sel = document.getElementById('modelSelect');
-const metricBtns = document.querySelectorAll('.metric-btn');
 const topK = document.getElementById('topK');
 const topKVal = document.getElementById('topKVal');
 const thr = document.getElementById('thr');
@@ -179,14 +168,9 @@ const btnROC = document.getElementById('btnROC');
 const btnPR  = document.getElementById('btnPR');
 
 topK.addEventListener('input', () => { topKVal.textContent = topK.value; updateImportance(); });
-thr.addEventListener('input', () => { thrVal.textContent = (thr.value/100).toFixed(2); updateCM(); updateProba(); });
+thr.addEventListener('input', () => { thrVal.textContent = (thr.value/100).toFixed(2); updateCM(); updateProba(); updateMetricsAll(); });
 btnROC.addEventListener('click', () => { btnROC.classList.add('on'); btnPR.classList.remove('on'); updateCurves(); });
 btnPR.addEventListener('click', () => { btnPR.classList.add('on'); btnROC.classList.remove('on'); updateCurves(); });
-metricBtns.forEach(b => b.addEventListener('click', () => {
-  metricBtns.forEach(x => x.classList.remove('on'));
-  b.classList.add('on');
-  updateMetricSingle();
-}));
 
 // Populate model dropdown
 const modelNames = Object.keys(window.DASHDATA.models);
@@ -197,9 +181,6 @@ modelNames.forEach(n => {
 });
 sel.value = modelNames[0];
 sel.addEventListener('change', () => { updateAll(); });
-
-// Init metric button
-metricBtns[0].classList.add('on');
 
 // Downloads
 document.getElementById('dlMetrics').href = window.METRICS_CSV_URI;
@@ -250,14 +231,16 @@ function renderOverview() {
   });
 }
 
-function updateMetricSingle() {
+function updateMetricsAll() {
   ensureFigures();
-  const m = document.querySelector('.metric-btn.on').dataset.metric;
   const cur = payload().confusions[nearestThrIndex()];
   const valMap = { Accuracy: cur.acc, TPR: cur.rec, FPR: cur.fpr, Precision: cur.prec, F1: cur.f1 };
-  Plotly.react('metricFig', [{ type:'bar', x:[m], y:[valMap[m]] }], {
-    title: `Metric (${sel.value} @ threshold=${(thr.value/100).toFixed(2)})`,
-    yaxis: {range:[0,1]}
+  const metrics = Object.keys(valMap);
+  const values = metrics.map(m => valMap[m]);
+  Plotly.react('metricFig', [{ type:'bar', x:metrics, y:values }], {
+    title: `Metrics (${sel.value} @ threshold=${(thr.value/100).toFixed(2)})`,
+    yaxis: {range:[0,1], title:'Score'},
+    xaxis: {title:'Metric'}
   });
 }
 
@@ -337,7 +320,7 @@ function updateImportance() {
 
 function updateAll() {
   renderOverview();
-  updateMetricSingle();
+  updateMetricsAll();
   updateCM();
   updateCurves();
   updateProba();
