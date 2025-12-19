@@ -54,11 +54,6 @@
       <input id="thr" type="range" min="0" max="50" step="1" value="25"/>
       <span id="thrVal" class="small">0.50</span>
     </div>
-    <div>
-      <div class="label">Curve type</div>
-      <button id="btnROC" class="btn on">ROC</button>
-      <button id="btnPR" class="btn">PR</button>
-    </div>
   </div>
 
   <div class="tabs">
@@ -101,8 +96,12 @@
   <div id="curves" class="tab">
     <div class="row">
       <div class="card">
-        <div id="curveFig"></div>
-        <div class="small">Toggle between ROC and PR; AUC displayed in legend.</div>
+        <div id="rocFig"></div>
+        <div class="small">ROC curve with AUC displayed in the legend.</div>
+      </div>
+      <div class="card">
+        <div id="prFig"></div>
+        <div class="small">PR curve with AUC displayed in the legend.</div>
       </div>
     </div>
   </div>
@@ -164,13 +163,9 @@ const topK = document.getElementById('topK');
 const topKVal = document.getElementById('topKVal');
 const thr = document.getElementById('thr');
 const thrVal = document.getElementById('thrVal');
-const btnROC = document.getElementById('btnROC');
-const btnPR  = document.getElementById('btnPR');
 
 topK.addEventListener('input', () => { topKVal.textContent = topK.value; updateImportance(); });
 thr.addEventListener('input', () => { thrVal.textContent = (thr.value/100).toFixed(2); updateCM(); updateProba(); updateMetricsAll(); });
-btnROC.addEventListener('click', () => { btnROC.classList.add('on'); btnPR.classList.remove('on'); updateCurves(); });
-btnPR.addEventListener('click', () => { btnPR.classList.add('on'); btnROC.classList.remove('on'); updateCurves(); });
 
 // Populate model dropdown
 const modelNames = Object.keys(window.DASHDATA.models);
@@ -196,13 +191,14 @@ Object.entries(window.IMP_CSV_MAP).forEach(([name, uri]) => {
 });
 
 // Figures
-let overviewFig, metricFig, cmFig, curveFig, probaFig, impFig;
+let overviewFig, metricFig, cmFig, rocFig, prFig, probaFig, impFig;
 
 function ensureFigures() {
   if (!overviewFig) overviewFig = Plotly.newPlot('overviewFig', [], {title: 'Overview'});
   if (!metricFig) metricFig = Plotly.newPlot('metricFig', [], {title: 'Metrics'});
   if (!cmFig) cmFig = Plotly.newPlot('cmFig', [], {title: 'Confusion Matrix'});
-  if (!curveFig) curveFig = Plotly.newPlot('curveFig', [], {title: 'ROC/PR Curves'});
+  if (!rocFig) rocFig = Plotly.newPlot('rocFig', [], {title: 'ROC Curve'});
+  if (!prFig) prFig = Plotly.newPlot('prFig', [], {title: 'PR Curve'});
   if (!probaFig) probaFig = Plotly.newPlot('probaFig', [], {title: 'Probabilities'});
   if (!impFig) impFig = Plotly.newPlot('impFig', [], {title: 'Feature Importance'});
 }
@@ -262,17 +258,14 @@ function updateCM() {
 function updateCurves() {
   ensureFigures();
   const p = payload();
-  const isROC = btnROC.classList.contains('on');
-  if (isROC) {
-    Plotly.react('curveFig', [
-      {type:'scatter', mode:'lines', x:p.roc.fpr, y:p.roc.tpr, name:`ROC (AUC=${p.roc.auc.toFixed(3)})`},
-      {type:'scatter', mode:'lines', x:[0,1], y:[0,1], name:'Diagonal', line:{dash:'dash'}}
-    ], { title: `ROC Curve (${sel.value})`, xaxis:{title:'FPR'}, yaxis:{title:'TPR'} });
-  } else {
-    Plotly.react('curveFig', [
-      {type:'scatter', mode:'lines', x:p.pr.rec, y:p.pr.prec, name:`PR (AUC=${p.pr.auc.toFixed(3)})`}
-    ], { title: `PR Curve (${sel.value})`, xaxis:{title:'Recall'}, yaxis:{title:'Precision'} });
-  }
+  Plotly.react('rocFig', [
+    {type:'scatter', mode:'lines', x:p.roc.fpr, y:p.roc.tpr, name:`ROC (AUC=${p.roc.auc.toFixed(3)})`},
+    {type:'scatter', mode:'lines', x:[0,1], y:[0,1], name:'Diagonal', line:{dash:'dash'}}
+  ], { title: `ROC Curve (${sel.value})`, xaxis:{title:'FPR'}, yaxis:{title:'TPR'} });
+
+  Plotly.react('prFig', [
+    {type:'scatter', mode:'lines', x:p.pr.rec, y:p.pr.prec, name:`PR (AUC=${p.pr.auc.toFixed(3)})`}
+  ], { title: `PR Curve (${sel.value})`, xaxis:{title:'Recall'}, yaxis:{title:'Precision'} });
 }
 
 function updateProba() {
