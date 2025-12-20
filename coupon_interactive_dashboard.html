@@ -437,7 +437,7 @@ const cartTreeCard = document.getElementById('cartTreeCard');
 const cartTreeImg = document.getElementById('cartTreeImg');
 
 topK.addEventListener('input', () => { topKVal.textContent = topK.value; updateImportance(); });
-thr.addEventListener('input', () => { thrVal.textContent = (thr.value/100).toFixed(2); updateCM(); updateProba(); updateMetricsAll(); });
+thr.addEventListener('input', () => { thrVal.textContent = thresholdValue().toFixed(2); updateCM(); updateProba(); updateMetricsAll(); });
 
 // Populate model dropdown
 const modelNames = Object.keys(window.DASHDATA.models);
@@ -447,6 +447,7 @@ modelNames.forEach(n => {
   sel.appendChild(opt);
 });
 sel.value = modelNames[0];
+thrVal.textContent = thresholdValue().toFixed(2);
 sel.addEventListener('change', () => { updateAll(); });
 
 // Downloads
@@ -476,6 +477,7 @@ function ensureFigures() {
 }
 
 function nearestThrIndex() { return Math.round(parseFloat(thr.value)); }
+function thresholdValue() { return payload().thresholds[nearestThrIndex()]; }
 function payload() { return window.DASHDATA.models[sel.value]; }
 
 // Build Overview grouped bars from METRICS_ROWS
@@ -522,7 +524,7 @@ function updateMetricsAll() {
   const metrics = Object.keys(valMap);
   const values = metrics.map(m => valMap[m]);
   Plotly.react('metricFig', [{ type:'bar', x:metrics, y:values, text: values, textposition:'outside', texttemplate:'%{y:.2f}' }], {
-    title: `Metrics (${sel.value} @ threshold=${(thr.value/100).toFixed(2)})`,
+    title: `Metrics (${sel.value} @ threshold=${thresholdValue().toFixed(2)})`,
     yaxis: {range:[0,1], title:'Score'},
     xaxis: {title:'Metric'}
   });
@@ -536,9 +538,10 @@ function updateCM() {
     z:[[cm[0], cm[1]], [cm[2], cm[3]]],
     x:['Pred 0','Pred 1'],
     y:['True 0','True 1'],
-    colorscale:'Blues'
+    colorscale:[[0,'#f7fbff'], [1,'#08306b']],
+    reversescale:false
   }], {
-    title: `Confusion Matrix (${sel.value} @ threshold=${(thr.value/100).toFixed(2)})`,
+    title: `Confusion Matrix (${sel.value} @ threshold=${thresholdValue().toFixed(2)})`,
     xaxis: {side:'top'}
   });
 }
@@ -560,7 +563,7 @@ function updateProba() {
   ensureFigures();
   const p = payload();
   const idx = nearestThrIndex();
-  const threshold = idx/100;
+  const threshold = thresholdValue();
   const edges = p.prob_hist.edges;
   const pos = p.prob_hist.pos;
   const neg = p.prob_hist.neg;
