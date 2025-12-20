@@ -326,7 +326,7 @@ const MODEL_OVERVIEW_DATA = {
             <li>Selected C=1.143451, λ=0.874545.</li>
           </ul>
           <p>Accuracy increased slightly relative to unregularized logistic regression (0.6836 vs 0.6820).</p>
-          <p>The ROC curve lies well above the diagonal (AUC = 0.727), indicating moderate ranking ability and a clear TPR–FPR trade-off, where higher thresholds can reduce false positives at the cost of lower recall (refer to A.2 Figure 3).</p>
+          <p>The ROC curve lies well above the diagonal (AUC = 0.727), indicating moderate ranking ability and a clear TPR–FPR trade-off, where higher thresholds can reduce false positives at the cost of lower recall.</p>
           <p>The trained model had:</p>
           <ul>
             <li>Total features: 96</li>
@@ -346,7 +346,7 @@ const MODEL_OVERVIEW_DATA = {
             <li>Best CV accuracy: 0.701526</li>
           </ul>
           <p>The single CART achieved comparable accuracy but higher TPR (0.791 vs 0.770–0.773) and substantially higher FPR (0.460 vs ≈0.43) than linear models, indicating overprediction of acceptance due to unaveraged, impurity-driven splits.</p>
-          <p>The top levels of the pruned tree split first on coupon type (Carry out &amp; Take away), followed by other coupon categories and expiration, showing that offer attractiveness and feasibility dominate early decision structure, with time and distance refining later splits (refer to A.2 Figure 4).</p>
+          <p>The top levels of the pruned tree split first on coupon type (Carry out &amp; Take away), followed by other coupon categories and expiration, showing that offer attractiveness and feasibility dominate early decision structure, with time and distance refining later splits.</p>
         </div>
       </div>`
   },
@@ -355,7 +355,7 @@ const MODEL_OVERVIEW_DATA = {
       <div class="overview-blurb">
         <div class="overview-body">
           <p>Bootstrap aggregating of shallow trees to reduce variance.</p>
-          <p>CV grid over n_estimators with 80% bootstrap samples per tree.</p>
+          <p>200 trees.</p>
         </div>
       </div>`
   },
@@ -363,6 +363,7 @@ const MODEL_OVERVIEW_DATA = {
     blurb: `
       <div class="overview-blurb">
         <div class="overview-body">
+          <p>300 trees.</p>
           <p>The tuned hyperparameters were:</p>
           <ul>
             <li>max_features = 0.5</li>
@@ -376,7 +377,7 @@ const MODEL_OVERVIEW_DATA = {
     blurb: `
       <div class="overview-blurb">
         <div class="overview-body">
-          <p>The best hyperparameters were (refer to A.2 Figure 5 and 6):</p>
+          <p>The best hyperparameters were:</p>
           <ul>
             <li>learning_rate = 0.2</li>
             <li>max_depth = 3</li>
