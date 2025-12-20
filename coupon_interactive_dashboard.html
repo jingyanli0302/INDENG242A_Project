@@ -309,7 +309,6 @@ const MODEL_OVERVIEW_DATA = {
   'Logistic Regression': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">Logistic regression (baseline)</div>
         <div class="overview-body">
           <p>Baseline elastic-net logit using one-hot encoded trip context.</p>
           <p>3-fold CV on a 1.5k stratified sample tuned the C penalty after encoding.</p>
@@ -319,7 +318,6 @@ const MODEL_OVERVIEW_DATA = {
   'L1 Logistic': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">3.2.1 L1 logistic regression</div>
         <div class="overview-body">
           <p>The cross-validation grid considered λ from {10}^{-2} to 20 (35 values). The selected C and λ were:</p>
           <ul>
@@ -339,7 +337,6 @@ const MODEL_OVERVIEW_DATA = {
   'CART (pruned)': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">3.2.2 CART</div>
         <div class="overview-body">
           <p>The grid search over ccp_alpha selected:</p>
           <ul>
@@ -354,7 +351,6 @@ const MODEL_OVERVIEW_DATA = {
   'Bagging (DT)': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">Bagging (DT)</div>
         <div class="overview-body">
           <p>Bootstrap aggregating of shallow trees to reduce variance.</p>
           <p>CV grid over n_estimators with 80% bootstrap samples per tree.</p>
@@ -364,7 +360,6 @@ const MODEL_OVERVIEW_DATA = {
   'Random Forest': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">3.2.3 Random forest</div>
         <div class="overview-body">
           <p>The tuned hyperparameters were:</p>
           <ul>
@@ -378,7 +373,6 @@ const MODEL_OVERVIEW_DATA = {
   'Gradient Boosting': {
     blurb: `
       <div class="overview-blurb">
-        <div class="overview-title">3.2.4 Gradient boosting</div>
         <div class="overview-body">
           <p>The best hyperparameters were (refer to A.2 Figure 5 and 6):</p>
           <ul>
